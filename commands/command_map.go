@@ -2,7 +2,7 @@ package commands
 
 import "fmt"
 
-func CommandMap(config *PokedexConfig) error {
+func CommandMap(config *PokedexConfig, arguments []string) error {
 	locationResponse, err := getLocations(config.Next, config.Cache)
 	if err != nil {
 		return err
@@ -15,7 +15,7 @@ func CommandMap(config *PokedexConfig) error {
 	return nil
 }
 
-func CommandMapBack(config *PokedexConfig) error {
+func CommandMapBack(config *PokedexConfig, arguments []string) error {
 	if config.Previous == "" {
 		fmt.Println("you're on the first page")
 		return nil

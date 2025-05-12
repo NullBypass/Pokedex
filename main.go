@@ -13,9 +13,9 @@ const PROMPT = "Pokedex > "
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
-	cache := pokecache.NewCache(time.Duration(5) * time.Second)
+	cache := pokecache.NewCache(time.Duration(60) * time.Second)
 	config := commands.PokedexConfig{
-		Next:  "https://pokeapi.co/api/v2/location-area",
+		Next:  "https://pokeapi.co/api/v2/location-area?offset=0&limit=20",
 		Cache: cache,
 	}
 	for {
@@ -32,7 +32,7 @@ func main() {
 		if !ok {
 			fmt.Printf("Unknown command: %s\n", command)
 		} else {
-			err := c.Callback(&config)
+			err := c.Callback(&config, cleanedLine[1:])
 			if err != nil {
 				return
 			}
