@@ -1,5 +1,7 @@
 package commands
 
+import "Pokedex/internal/pokecache"
+
 type cliCommand struct {
 	name        string
 	description string
@@ -9,6 +11,7 @@ type cliCommand struct {
 type PokedexConfig struct {
 	Next     string
 	Previous string
+	Cache    *pokecache.Cache
 }
 
 var Commands = map[string]cliCommand{}

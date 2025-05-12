@@ -2,17 +2,21 @@ package main
 
 import (
 	"Pokedex/commands"
+	"Pokedex/internal/pokecache"
 	"bufio"
 	"fmt"
 	"os"
+	"time"
 )
 
 const PROMPT = "Pokedex > "
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
+	cache := pokecache.NewCache(time.Duration(5) * time.Second)
 	config := commands.PokedexConfig{
-		Next: "https://pokeapi.co/api/v2/location-area",
+		Next:  "https://pokeapi.co/api/v2/location-area",
+		Cache: cache,
 	}
 	for {
 		fmt.Print(PROMPT)
