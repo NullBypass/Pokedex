@@ -15,8 +15,9 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	cache := pokecache.NewCache(time.Duration(60) * time.Second)
 	config := commands.PokedexConfig{
-		Next:  "https://pokeapi.co/api/v2/location-area?offset=0&limit=20",
-		Cache: cache,
+		Next:     "https://pokeapi.co/api/v2/location-area?offset=0&limit=20",
+		Cache:    cache,
+		Pokemons: make(map[string]commands.PokemonDetails),
 	}
 	for {
 		fmt.Print(PROMPT)

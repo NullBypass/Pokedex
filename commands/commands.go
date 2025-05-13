@@ -8,10 +8,15 @@ type cliCommand struct {
 	Callback    func(config *PokedexConfig, arguments []string) error
 }
 
+type Pokemon struct {
+	name string
+}
+
 type PokedexConfig struct {
 	Next     string
 	Previous string
 	Cache    *pokecache.Cache
+	Pokemons map[string]PokemonDetails
 }
 
 var Commands = map[string]cliCommand{}
@@ -41,5 +46,10 @@ func init() {
 		name:        "explore",
 		description: "Explore Pokemon",
 		Callback:    CommandExplore,
+	}
+	Commands["catch"] = cliCommand{
+		name:        "catch",
+		description: "Catch Pokemon",
+		Callback:    CommandCatch,
 	}
 }

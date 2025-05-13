@@ -9,6 +9,10 @@ import (
 	"net/http"
 )
 
+type PokemonDetails struct {
+	BaseExperience int `json:"base_experience"`
+}
+
 type LocationAreaDetails struct {
 	PokemonEncounters []struct {
 		Pokemon struct {
@@ -109,4 +113,26 @@ func exploreLocations(locationIdOrName string, cache *pokecache.Cache) (Location
 	}
 
 	return locationAreaDetails, nil
+}
+
+func getPokemonDetails(pokemonName string, cache *pokecache.Cache) (PokemonDetails, error) {
+	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s/", pokemonName)
+	res, err := http.Get(url)
+	if err != nil {
+		return PokemonDetails{}, err
+	}
+	if res.StatusCode > 299 {
+		return PokemonDetails{}, errors.New("Pokedex returned " + res.Status)
+	}
+	bodyBytes, err := io.ReadAll(res.Body)
+	if err != nil {
+		return PokemonDetails{}, errors.New("cannot read response body")
+	}
+	defer res.Body.Close()
+	var pokemonDetails PokemonDetails
+	err = json.Unmarshal(bodyBytes, &pokemonDetails)
+	if err != nil {
+		return PokemonDetails{}, errors.New("cannot umarshall response body")
+	}
+	return pokemonDetails, nil
 }
