@@ -18,9 +18,6 @@ func CommandCatch(config *PokedexConfig, arguments []string) error {
 		return err
 	}
 	fmt.Printf("Throwing a Pokeball at %s...\n", pokemonName)
-	if err != nil {
-		return err
-	}
 	randomChance := rand.Intn(500)
 	threshold := 500 - poke.BaseExperience
 	if randomChance >= threshold {

@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 )
@@ -12,16 +11,10 @@ func CommandInspect(config *PokedexConfig, arguments []string) error {
 		return errors.New("pokemon name not provided")
 	}
 	pokemonName := arguments[0]
-	pokemonDetailsJSONString, ok := config.Cache.Get(pokemonName)
+	pokemonDetails, ok := config.Pokemons[pokemonName]
 	if !ok {
 		fmt.Println("pokemon not found")
 		return errors.New("pokemon not found")
-	}
-	var pokemonDetails PokemonDetails
-	err := json.Unmarshal(pokemonDetailsJSONString, &pokemonDetails)
-	if err != nil {
-		fmt.Println("Cant marshal pokemon details")
-		return err
 	}
 
 	fmt.Println("Name:", pokemonName)
