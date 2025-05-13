@@ -5,7 +5,7 @@ import "Pokedex/internal/pokecache"
 type cliCommand struct {
 	name        string
 	description string
-	Callback    func(config *PokedexConfig, arguments []string) error
+	Callback    func(*PokedexConfig, []string) error
 }
 
 type Pokemon struct {
@@ -56,5 +56,10 @@ func init() {
 		name:        "inspect",
 		description: "Inspect Pokemon",
 		Callback:    CommandInspect,
+	}
+	Commands["pokedex"] = cliCommand{
+		name:        "pokedex",
+		description: "list caught pokemons",
+		Callback:    CommandPokedex,
 	}
 }
