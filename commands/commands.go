@@ -52,4 +52,9 @@ func init() {
 		description: "Catch Pokemon",
 		Callback:    CommandCatch,
 	}
+	Commands["inspect"] = cliCommand{
+		name:        "inspect",
+		description: "Inspect Pokemon",
+		Callback:    CommandInspect,
+	}
 }

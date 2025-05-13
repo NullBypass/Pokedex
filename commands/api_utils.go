@@ -11,6 +11,23 @@ import (
 
 type PokemonDetails struct {
 	BaseExperience int `json:"base_experience"`
+	Height         int `json:"height"`
+	Weight         int `json:"weight"`
+	Stats          []struct {
+		BaseStat int `json:"base_stat"`
+		Effort   int `json:"effort"`
+		Stat     struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"stat"`
+	} `json:"stats"`
+	Types []struct {
+		Slot int `json:"slot"`
+		Type struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"type"`
+	} `json:"types"`
 }
 
 type LocationAreaDetails struct {
@@ -116,21 +133,26 @@ func exploreLocations(locationIdOrName string, cache *pokecache.Cache) (Location
 }
 
 func getPokemonDetails(pokemonName string, cache *pokecache.Cache) (PokemonDetails, error) {
-	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s/", pokemonName)
-	res, err := http.Get(url)
-	if err != nil {
-		return PokemonDetails{}, err
-	}
-	if res.StatusCode > 299 {
-		return PokemonDetails{}, errors.New("Pokedex returned " + res.Status)
-	}
-	bodyBytes, err := io.ReadAll(res.Body)
-	if err != nil {
-		return PokemonDetails{}, errors.New("cannot read response body")
-	}
-	defer res.Body.Close()
 	var pokemonDetails PokemonDetails
-	err = json.Unmarshal(bodyBytes, &pokemonDetails)
+	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s/", pokemonName)
+	bodyBytes, ok := cache.Get(pokemonName)
+	if !ok {
+		res, err := http.Get(url)
+		if err != nil {
+			return PokemonDetails{}, err
+		}
+		if res.StatusCode > 299 {
+			return PokemonDetails{}, errors.New("Pokedex returned " + res.Status)
+		}
+		bodyBytes, err = io.ReadAll(res.Body)
+		if err != nil {
+			return PokemonDetails{}, errors.New("cannot read response body")
+		}
+		defer res.Body.Close()
+		cache.Add(pokemonName, bodyBytes)
+	}
+
+	err := json.Unmarshal(bodyBytes, &pokemonDetails)
 	if err != nil {
 		return PokemonDetails{}, errors.New("cannot umarshall response body")
 	}
