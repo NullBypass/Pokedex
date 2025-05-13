@@ -8,8 +8,8 @@ Pokémon Data Retrieval: Fetch comprehensive information about various Pokémon 
 Caching Mechanism: Implements a caching system to store previously retrieved data, reducing redundant API calls and improving performance.
 
 ## Getting Started
-Prerequisites
-Go 1.16 or higher installed on your machine.
+Prerequisites:
+- Go 1.16 or higher installed on your machine.
 
 ### Installation
 1. Clone this repository
