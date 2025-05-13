@@ -1,3 +1,4 @@
+### Pokedexcli
 A command-line Pokédex application written in Go. This tool allows users to interactively explore Pokémon data directly from the terminal.
 
 ## Features
